@@ -1,13 +1,10 @@
-//=============swilam area============asdfadsf
+const express = require('express')
+
+const app = express()
 
 
 
 
-
-
-//=============braa area============
-
-
-
-
-
+app.listen(3001,()=>{
+    console.log(`server running on http://localhost:3001/`);
+})
