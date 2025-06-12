@@ -14,7 +14,7 @@ const app = express()
 
 app.use('/api/admin', adminRoutes)
 app.use('/api/projects', projectRoutes)
-app.use('/api/contact', contactRoutes)
+app.use('/api/admin/contact', contactRoutes)
 
 app.all("*", (req, res, next) => {
   res.status(404).json({ status: "fail", data: "Page Not Found" });
