@@ -1,8 +1,9 @@
+const express = require("express");
+const router = express.Router();
+const { check } = require('express-validator')
 const adminController = require("../controller/admin.controller");
 const projectController = require("../controller/project.controller");
 
-const express = require("express");
-const router = express.Router();
 
 router.route("/login")
     .post(async(req,res)=>{res.json({data:"test"})})
