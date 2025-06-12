@@ -1,0 +1,163 @@
+{
+  "api/admin/projects": {
+    "GET": {
+      "send": {},
+      "receive": {
+        "status": 200,
+        "message": "Projects fetched successfully",
+        "data": [
+          {
+            "id": "project_id",
+            "title": "project_title",
+            "description": "project_description",
+            "Pic": "project_pic",
+            "sponsor": "project_sponsor",
+            "TimeToFinish": "DD/MM/YYYY"
+          }
+        ]
+      }
+    },
+    "POST": {
+      "send": {
+        "data": {
+          "id": "project_id",
+          "title": "project_title",
+          "description": "project_description",
+          "Pic": "project_pic",
+          "sponsor": "project_sponsor",
+          "TimeToFinish": "DD/MM/YYYY"
+        }
+      },
+      "receive": {
+        "status": 201,
+        "message": "Project created successfully",
+        "data": {}
+      }
+    },
+    "PUT": {
+      "send": {
+        "data": {
+          "id": "Updated_project_id",
+          "title": "Updated_project_title",
+          "description": "Updated_project_description",
+          "Pic": "Updated_project_pic",
+          "sponsor": "Updated_project_sponsor",
+          "TimeToFinish": "DD/MM/YYYY"
+        }
+      },
+      "receive": {
+        "status": 200,
+        "message": "Project updated successfully",
+        "data": {}
+      }
+    },
+    "DELETE": {
+      "send": {
+        "data": {
+          "id": "project_id"
+        }
+      },
+      "receive": {
+        "status": 200,
+        "message": "Project deleted successfully",
+        "data": {}
+      }
+    }
+  },
+  "api/admin/login": {
+    "POST": {
+      "send": {
+        "data": {
+          "username": "username",
+          "password": "password"
+        }
+      },
+      "receive": {
+        "status": 200,
+        "message": "Login successful",
+        "data": {
+          "Authorization":"Bearer <token>"
+        }
+      }
+    }
+  },
+  "api/admin/logout": {
+    "POST": {
+      "send": {
+        "data": {
+          "Authorization": "Bearer <token>"
+        }
+      },
+      "receive": {
+        "status": 200,
+        "message": "Logout successfully",
+        "data": {}
+      }
+    }
+  },
+  "api/admin/logs": {
+    "GET": {
+      "send": {
+        "data": {}
+      },
+      "receive": {
+        "status": 200,
+        "message": "Logs shows successfully",
+        "data": [
+          {
+            "nickname": "nickname",
+            "role": "role",
+            "email": "email",
+            "task": {
+              "taskname": "name",
+              "taskdate": "taskdate",
+              "status": "Done",
+              "workedhours": "workedhours"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "api/admin/messages": {
+    "GET": {
+      "send": {
+        "data": {}
+      },
+      "receive": {
+        "status": 200,
+        "message": "Login successful",
+        "data": [
+          {
+            "username": "username",
+            "email": "email",
+            "phonenum": "Phonenum",
+            "description": "Description",
+            "title": "title",
+            "knowby": "knowBy",
+            "date": "date"
+          }
+        ]
+      }
+    }
+  },
+  "api/contact": {
+    "POST": {
+      "send": {
+        "data": {
+          "username": "username",
+          "email": "email",
+          "phonenum": "Phonenum",
+          "description": "Description",
+          "title": "title",
+          "knowby": "knowBy"
+        }
+      },
+      "receive": {
+        "status": 200,
+        "message": "Form sent successfully",
+        "data": {}
+      }
+    }
+  }
+}
