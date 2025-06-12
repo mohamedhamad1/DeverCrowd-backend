@@ -1,5 +1,5 @@
 const projectController = require("../controller/project.controller");
-const express = require("express");
+const express = require("express")
 const router = express.Router();
 const { check } = require('express-validator')
 

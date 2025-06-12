@@ -1,5 +1,5 @@
 const contactController = require("../controller/contact.controller");
-const express = require("express");
+const express = require("express")
 const router = express.Router();
 const { check } = require('express-validator')
 
