@@ -76,7 +76,7 @@
         "status": 200,
         "message": "Login successful",
         "data": {
-          "Authorization":"Bearer <token>"
+          "Authorization": "Bearer <token>"
         }
       }
     }
