@@ -2,7 +2,7 @@ const projectController = require("../controller/project.controller");
 const express = require("express");
 const router = express.Router();
 
-router.route("/projects")
+router.route("/")
     .get(projectController.displayProjects)
     .post(projectController.createProject)
     .put(projectController.editProject)

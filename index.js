@@ -1,6 +1,8 @@
 //====================Libs==============
 const express = require('express')
 const adminRoutes = require("./routes/admin.route")
+const projectRoutes = require("./routes/admin.route")
+const contactRoutes = require("./routes/admin.route")
 const cors = require("cors");
 const session = require('express-session')
 const passport = require("passport");
@@ -11,6 +13,8 @@ const bodyParser = require('body-parser')
 const app = express()
 
 app.use('/api/admin', adminRoutes)
+app.use('/api/projects', projectRoutes)
+app.use('/api/contact', contactRoutes)
 
 app.all("*", (req, res, next) => {
   res.status(404).json({ status: "fail", data: "Page Not Found" });
