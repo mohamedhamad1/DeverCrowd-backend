@@ -3,36 +3,19 @@ const router = express.Router();
 const { check } = require("express-validator");
 const adminController = require("../controller/admin.controller");
 
-router.route("/login").post(async (req, res) => {
-  res.json({ data: "test" });
-});
-
-router.route("/logout").get(async (req, res) => {
-  res.json({ data: "test" });
-});
+router.route("/login").post(adminController.Login);
+router.route("/logout").get(adminController.Logout);
 
 router
   .route("/message")
-  .get(async (req, res) => {
-    res.json({ data: "test" });
-  })
-  .delete(async (req, res) => {
-    res.json({ data: "test" });
-  });
+  .get(adminController.GetMessages)
+  .delete(adminController.DelMessages);
 
 router
   .route("/log")
-  .get(async (req, res) => {
-    res.json({ data: "test" });
-  })
-  .post(async (req, res) => {
-    res.json({ data: "test" });
-  })
-  .delete(async (req, res) => {
-    res.json({ data: "test" });
-  })
-  .put(async (req, res) => {
-    res.json({ data: "test" });
-  });
+  .get(adminController.GetLogs)
+  .post(adminController.CreateLogs)
+  .delete(adminController.DelLogs)
+  .put(adminController.UpdateLogs);
 
 module.exports = router;

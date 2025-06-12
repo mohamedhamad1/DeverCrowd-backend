@@ -5,9 +5,12 @@ const { check } = require('express-validator')
 
 
 router.route("/")
-    .get(async(req,res)=>{res.json({data:"test"})})
-    .post(async(req,res)=>{res.json({data:"test"})})
-    .put(async(req,res)=>{res.json({data:"test"})})
-    .delete(async(req,res)=>{res.json({data:"test"})})
+    .get(projectController.getProjects)
+
+    .post(projectController.createProject)
+
+    .put(projectController.updateProject)
+
+    .delete(projectController.delProject)
 
 module.exports = router

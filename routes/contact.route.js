@@ -5,6 +5,6 @@ const { check } = require('express-validator')
 
 
 router.route("/")
-    .post(async(req,res)=>{res.json({data:"test"})})
+    .post(contactController.sendForm);
 
 module.exports = router
