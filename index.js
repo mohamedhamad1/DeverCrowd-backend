@@ -3,9 +3,9 @@ const express = require('express')
 const adminRoutes = require("./routes/admin.route")
 const projectRoutes = require("./routes/admin.route")
 const contactRoutes = require("./routes/admin.route")
-const cors = require("cors");
+const cors = require("cors")
 const session = require('express-session')
-const passport = require("passport");
+const passport = require("passport")
 const bodyParser = require('body-parser')
 //====================================
 

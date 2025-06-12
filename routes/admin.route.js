@@ -3,16 +3,16 @@ const express = require("express");
 const router = express.Router();
 
 router.route("/login")
-    .post(adminController.login)
+    .post(async(req,res)=>{res.json({data:"test"})})
 
 router.route("/logout")
-    .get(adminController.logout)
+    .get(async(req,res)=>{res.json({data:"test"})})
 
 router.route("/messages")
-    .get(adminController.messages)
+    .get(async(req,res)=>{res.json({data:"test"})})
 
 router.route("/logs")
-    .get(adminController.logs)
+    .get(async(req,res)=>{res.json({data:"test"})})
 
 
 module.exports = router

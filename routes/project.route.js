@@ -3,9 +3,9 @@ const express = require("express");
 const router = express.Router();
 
 router.route("/")
-    .get(projectController.displayProjects)
-    .post(projectController.createProject)
-    .put(projectController.editProject)
-    .delete(projectController.deleteProject)
+    .get(async(req,res)=>{res.json({data:"test"})})
+    .post(async(req,res)=>{res.json({data:"test"})})
+    .put(async(req,res)=>{res.json({data:"test"})})
+    .delete(async(req,res)=>{res.json({data:"test"})})
 
 module.exports = router
