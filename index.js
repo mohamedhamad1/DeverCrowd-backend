@@ -29,9 +29,3 @@ app.listen(process.env.PORT, () => {
   console.log(`server running on http://localhost:${process.env.PORT}/`);
 });
 
-//bla bla
-//test2
-// comment here
-// another comment
-
-//another cooment

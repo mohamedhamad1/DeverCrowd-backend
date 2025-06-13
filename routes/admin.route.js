@@ -1,13 +1,20 @@
 const express = require("express");
 const router = express.Router();
+const auth = require('../middlewares/auth');
 const { check } = require("express-validator");
 const adminController = require("../controller/admin.controller");
 
-router.route("/login").post(adminController.Login);
+router.route("/authtest")
+  .get(auth.verifyToken, adminController.authtest);
 
-router.route("/register").post(adminController.register);
+router.route("/login")
+  .post(adminController.Login);
 
-router.route("/logout").post(adminController.Logout);
+router.route("/register")
+  .post(adminController.register);
+
+router.route("/logout")
+  .post(adminController.Logout);
 
 router
   .route("/message")

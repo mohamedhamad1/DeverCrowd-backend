@@ -7,6 +7,7 @@ const DATA = {
   requiredFields: "Email and password are required.",
   invalidCredentials: "Invalid credentials.",
   loginSuccess: "Login successful!",
+  logoutSuccess: "Logout successful!",
   queryError: "Database query failed.",
   tokenRequired: "Token is required.",
   userNotFound: "User not found.",
