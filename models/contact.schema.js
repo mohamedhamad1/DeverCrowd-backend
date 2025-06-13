@@ -28,6 +28,11 @@ const contactSchema = mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now(),
+    },
+    messageId:{
+        type: Number,
+        required: true,
+        unique: true,
     }
 })
 module.exports = mongoose.model('Contact',contactSchema,'contacts')
