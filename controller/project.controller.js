@@ -9,21 +9,29 @@ const createProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
   try {
-    const UpdatedProject = await Project.findOne({ projectid: projectid });
-    const title = req.body.title | UpdatedProject.title;
-    const description = req.body.description | updateProject.description;
-    const pic = req.body.pic | updateProject.pic;
-    const time_to_finish = req.body.time_to_finish | updateProject.time_to_finish;
-    const sponser = req.body.sponser | updateProject.sponser;
-    const status = req.body.status | updateProject.status;
+    const { projectid, title, description, pic, time_to_finish, sponser, status } = req.body;
+
+    let project = await Project.findOne({ projectid });
+
+    if (!project) {
+      return res.status(404).json({ status: 404, message: "Project not found" });
+    }
+
+    project.title = title || project.title;
+    project.description = description || project.description;
+    project.pic = pic | project.pic;
+    project.time_to_finish = time_to_finish || project.time_to_finish;
+    project.sponser = sponser || project.sponser;
+    project.status = status || project.status;
+    await project.save();
     data = {
-      id: UpdatedProject.projectId,
-      title: UpdatedProject.title,
-      description: UpdatedProject.description,
-      pic: UpdatedProject.pic,
-      time_to_finish: UpdatedProject.time_to_finish,
-      sponser: UpdatedProject.sponser,
-      status: UpdatedProject.status,
+      id: project.projectId,
+      title: project.title,
+      description: project.description,
+      pic: project.pic,
+      time_to_finish: project.time_to_finish,
+      sponser: project.sponser,
+      status: project.status,
     };
     res.json({ staus: 200, message: "updated successfully", data: data });
   } catch (err) {
@@ -33,7 +41,7 @@ const updateProject = async (req, res) => {
 
 const delProject = async (req, res) => {
   try {
-    const projectId = req.body.projectId;
+    const projectId = req.params.projectId;
     if (!projectId) {
       return res.json({
         status: 400,
