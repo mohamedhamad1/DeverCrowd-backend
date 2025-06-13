@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const contactSchema = mongoose.Schema({
-    user_name:{
+    username:{
         type: String,
         required: true
     },
@@ -20,7 +20,7 @@ const contactSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    known_by:{
+    knownby:{
         type: String,
         required: true
     },
@@ -29,7 +29,7 @@ const contactSchema = mongoose.Schema({
         required: true,
         default: Date.now(),
     },
-    messageId:{
+    messageid:{
         type: Number,
         required: true,
         unique: true,
