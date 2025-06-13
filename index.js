@@ -1,4 +1,5 @@
 //====================Libs==============
+require('dotenv').config();
 const express = require("express");
 const adminRoutes = require("./routes/admin.route");
 const projectRoutes = require("./routes/project.route");
@@ -10,18 +11,14 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 
 
-
-
-
 //============DB connection ===================
-
-
 mongoose
-  .connect("mongodb+srv://devercrowd:bEXgF81qnULubpTu@cluster0.2pheten.mongodb.net/")
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Mongodb server connected");
   })
   .catch((err) => console.error("MongoDB connection error:", err));
+
 
 //===================server===================
 const app = express();
@@ -39,6 +36,6 @@ app.use((req, res, next) => {
 
 
 
-app.listen(3001, () => {
-  console.log(`server running on http://localhost:3001/`);
+app.listen(process.env.PORT, () => {
+  console.log(`server running on http://localhost:${process.env.PORT}/`);
 });
