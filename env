@@ -1,0 +1,3 @@
+MONGODB_URI = "mongodb+srv://devercrowd:bEXgF81qnULubpTu@cluster0.2pheten.mongodb.net/"
+PORT = 3001
+JWT_SECRET_KEY =  "tempSecretKeyForJWT"
