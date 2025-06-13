@@ -1,6 +1,7 @@
 const JWThandler = require("../utils/JWThandler");
 const errorHandler = require("../utils/errorHandler");
 const Admin = require("../models/admin.schema");
+const Message = require("../models/message.schema")
 const bcrypt = require("bcryptjs");
 const redis = require("../config/redis");
 const jwt = require("jsonwebtoken");
@@ -88,12 +89,22 @@ const authtest = async (req, res) => { //swilam
 };
 
 const GetMessages = async (req, res) => {
-  res.json({ data: "test" });
+  const limit = req.query.limit || 10
+  const page = req.query.page || 1
+  const skip = limit * (page - 1)
+  const messages = await Message.find().limit(limit).skip(skip)
+  res.json({status: 200, message:"Messages paginated", data:{messages}})
 };
 
 const DelMessages = async (req, res) => {  //swilam
-
-  res.json({ data: "test" });
+  const {id} = req.params
+  
+  const message = await Message.findOne({_id:id})
+  if(!message){
+    return res.json({status:400, message:httpStatus.DATA.messageNotExist}) 
+  }
+  const data = await Message.deleteOne({_id:id})
+  res.json({status:200, message:httpStatus.DATA.messageDeleted})
 };
 
 const GetLogs = async (req, res) => {  //braa

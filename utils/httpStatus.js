@@ -14,7 +14,8 @@ const DATA = {
   invalidID: "Invalid ID.",
   tokenValid: "Token is valid. Can log in.",
   invalidToken: "Invalid or expired token.",
-
+  messageDeleted: "Message Deleted successfully",
+  messageNotExist: "Message Not Exist",
   emailRequired: "Email is required.",
   sendingOTP: "OTP sended successfully",
   InvalidOTP: "Invalid OTP.",

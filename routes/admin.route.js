@@ -15,14 +15,15 @@ router.route("/register")
 
 router.route("/logout")
   .post(adminController.Logout);
-
-router
-  .route("/message")
-  .get(adminController.GetMessages)
+  
+router.route("/message/:id")
   .delete(adminController.DelMessages);
 
-router
-  .route("/log")
+router.route("/message")
+  .get(adminController.GetMessages)
+
+
+router.route("/log")
   .get(adminController.GetLogs)
   .post(adminController.CreateLogs)
   .delete(adminController.DelLogs)

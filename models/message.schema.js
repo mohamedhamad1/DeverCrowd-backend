@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const contactSchema = mongoose.Schema({
+const messageSchema = mongoose.Schema({
     username:{
         type: String,
         required: true
@@ -14,7 +14,7 @@ const contactSchema = mongoose.Schema({
     },
     description:{
         type: String,
-        default: 0
+        required: true
     },
     title:{
         type: String,
@@ -26,13 +26,8 @@ const contactSchema = mongoose.Schema({
     },
     date:{
         type: Date,
-        required: true,
+        required: true, 
         default: Date.now(),
-    },
-    messageid:{
-        type: Number,
-        required: true,
-        unique: true,
     }
 })
-module.exports = mongoose.model('Contact',contactSchema,'contacts')
+module.exports = mongoose.model('Message',messageSchema,'messages') 
