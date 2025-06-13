@@ -9,6 +9,7 @@ router.route("/")
     .post(projectController.createProject)
     
     router.route("/:id")
+    .get(projectController.singleProject)
     .put(projectController.updateProject)
     .delete(projectController.delProject)
 
