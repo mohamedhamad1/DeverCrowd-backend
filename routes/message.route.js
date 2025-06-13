@@ -1,4 +1,4 @@
-const contactController = require("../controller/contact.controller");
+const contactController = require("../controller/message.controller");
 const express = require("express")
 const router = express.Router();
 const { check } = require('express-validator')
