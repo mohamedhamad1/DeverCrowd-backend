@@ -22,9 +22,10 @@ const createProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
   try {
-    const { projectid, title, description, pic, time_to_finish, sponser, status } = req.body;
+    const projectid = req.params._id;
+    const { title, description, pic, time_to_finish, sponser, status } = req.body;
 
-    let project = await Project.findOne({ projectid });
+    let project = await Project.findOne({ _id:projectid });
 
     if (!project) {
       return res.status(404).json({ status: 404, message: "Project not found" });
