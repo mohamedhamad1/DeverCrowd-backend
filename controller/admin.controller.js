@@ -14,7 +14,9 @@ const Login = async (req, res) => { //swilam
 
 const register = async (req, res) => { //swilam
   try {
-    const {username, password, role} = req.body
+    const {username, password, role, nickname} = req.body
+    const admin = await Admin.findOne({username:username})
+
   } catch (error) {
     
   }

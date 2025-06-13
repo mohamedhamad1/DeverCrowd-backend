@@ -1,9 +1,9 @@
 const Project = require("../models/project.schema");
-const getProjects = async (req, res) => {
+const getProjects = async (req, res) => { //swilam
   res.json({ data: "test" });
 };
 
-const createProject = async (req, res) => {
+const createProject = async (req, res) => { //swilam
   res.json({ data: "test" });
 };
 

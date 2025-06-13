@@ -24,7 +24,7 @@ const projectSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  projectId: {
+  projectid: {
     type: Number,
     required: true,
     unique: true,

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const adminSchema = mongoose.Schema({
-    user_name:{
+    username:{
         type: String,
         required: true,
         unique: true,
@@ -9,7 +9,7 @@ const adminSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    nick_name:{
+    nickname:{
         type: String,
         required: true
     },
