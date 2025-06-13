@@ -3,11 +3,17 @@ const httpStatus = require("../utils/httpStatus");
 const errorHandler = require("../utils/errorHandler");
 
 const getProjects = async (req, res) => {
-  const limit = req.query.limit || 10;
-  const page = req.query.page || 1;
-  const skip = limit * (page - 1);
-  const projects = await Project.find().limit(limit).skip(skip);
-  res.json({ status: 200, message: "Projects paginated", data: { projects } });
+    const limit = req.query.limit || 10
+    const page = req.query.page || 1
+    const skip = limit * (page - 1)
+    const projects = await Project.find().limit(limit).skip(skip)
+    res.json({status: 200, message:"Projects paginated", data:{projects}})
+};
+
+const singleProject = async (req, res) => {
+  const {id} = req.params
+  const project = await Project.findOne({_id:id})
+  res.json({status: 200, message:"Project Details", data:{project}})
 };
 
 const createProject = async (req, res) => {
@@ -30,19 +36,32 @@ const createProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
   try {
-    const projectid = req.params.id;
-    const updates = req.body;
-    let project = await Project.findById({ _id: projectid });
-    
-    
+    const projectid = req.params._id;
+    const { title, description, pic, time_to_finish, sponser, status } = req.body;
+
+    let project = await Project.find({ _id:projectid });
+
+    if (!project) {
+      return res.status(404).json({ status: 404, message: "Project not found" });
+    }
+
     project.title = title || project.title;
     project.description = description || project.description;
-    project.pic = pic || project.pic;
-    project.timetofinish = timetofinish || project.timetofinish;
+    project.pic = pic | project.pic;
+    project.time_to_finish = time_to_finish || project.time_to_finish;
     project.sponser = sponser || project.sponser;
     project.status = status || project.status;
     await project.save();
-    res.json({ staus: 200, message: "updated successfully", data: project });
+    data = {
+      id: project.projectId,
+      title: project.title,
+      description: project.description,
+      pic: project.pic,
+      time_to_finish: project.time_to_finish,
+      sponser: project.sponser,
+      status: project.status,
+    };
+    res.json({ staus: 200, message: "updated successfully", data: data });
   } catch (err) {
     res.json({ staus: 500, message: "error occurs" });
   }
@@ -55,8 +74,7 @@ const delProject = async (req, res) => {
     const removedProject = await Project.findByIdAndDelete(projectId);
 
     if (!removedProject) {
-      return res
-        .json({ status: 404, message: "Project not found", data: {} });
+      return res.status(404).json({ status: 404, message: "Project not found", data: {} });
     }
 
     return res.status(200).json({
@@ -75,4 +93,5 @@ module.exports = {
   createProject,
   updateProject,
   delProject,
+  singleProject
 };
