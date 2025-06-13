@@ -1,9 +1,8 @@
-const generateJWT = require("../utils/generateJWT");
+const HandlingJWT = require("../utils/HandlingJWT");
 const errorHandler = require("../utils/errorHandler");
 const Admin = require("../models/admin.schema");
 const bcrypt = require("bcryptjs");
 const redis = require("../config/redis");
-const blacklistJWT = require("../utils/blacklistJWT");
 const jwt = require("jsonwebtoken");
 const httpStatus = require("../utils/httpStatus");
 
@@ -26,7 +25,7 @@ const Login = async (req, res) => {  //swilam
       data: {},
     });
   }
-  const token = await generateJWT({
+  const token = await HandlingJWT.generateJWT({
     username: user.username,
     role: user.role,
     id: user._id,
@@ -58,7 +57,7 @@ const register = async (req, res) => {  //swilam
     password: passwordHashing,
     role,
   });
-  const token = await generateJWT({
+  const token = await HandlingJWT.generateJWT({
     username: newAdmin.username,
     role: newAdmin.role,
   });
@@ -78,7 +77,7 @@ const Logout = async (req, res) => {  //swilam
     res.json({ status: 400, message: httpStatus.DATA.tokenRequired, data: {} });
   }
   
-  await blacklistJWT(token);
+  await HandlingJWT.blacklistJWT(token);
   res.json({ status: 200, message: httpStatus.DATA.logoutSuccess });
 };
 
