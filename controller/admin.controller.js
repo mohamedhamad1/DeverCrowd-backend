@@ -107,12 +107,12 @@ const DelMessages = async (req, res) => {  //swilam
   res.json({status:200, message:httpStatus.DATA.messageDeleted})
 };
 
-const GetLogs = async (req, res) => {  //braa
+const GetLogs = async (req, res) => {  //swilam
 
   res.json({ data: "test" });
 };
 
-const CreateLogs = async (req, res) => {  //braa
+const CreateLogs = async (req, res) => {  //swilam
 
   res.json({ data: "test" });
 };
