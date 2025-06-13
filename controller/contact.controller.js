@@ -1,6 +1,8 @@
 
 
-const sendForm = async(req,res)=>{res.json({data:"test"})}
+const sendForm = async(req,res)=>{ //swilam
+    res.json({data:"test"})
+}
 
 module.exports = {
     sendForm

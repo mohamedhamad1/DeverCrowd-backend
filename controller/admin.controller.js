@@ -1,32 +1,32 @@
-const Login = async (req, res) => {
+const Login = async (req, res) => { //swilam
   res.json({ data: "test" });
 };
 
-const Logout = async (req, res) => {
+const Logout = async (req, res) => { //swilam
   res.json({ data: "test" });
 };
 
-const GetMessages = async (req, res) => {
+const GetMessages = async (req, res) => { //swilam
   res.json({ data: "test" });
 };
 
-const DelMessages = async (req, res) => {
+const DelMessages = async (req, res) => { //swilam
   res.json({ data: "test" });
 };
 
-const GetLogs = async (req, res) => {
+const GetLogs = async (req, res) => { //braa
   res.json({ data: "test" });
 };
 
-const CreateLogs = async (req, res) => {
+const CreateLogs = async (req, res) => { //braa
   res.json({ data: "test" });
 };
 
-const UpdateLogs = async (req, res) => {
+const UpdateLogs = async (req, res) => { //braa
   res.json({ data: "test" });
 };
 
-const DelLogs = async (req, res) => {
+const DelLogs = async (req, res) => { //braa
   res.json({ data: "test" });
 };
 

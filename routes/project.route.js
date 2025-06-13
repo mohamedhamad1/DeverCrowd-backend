@@ -6,11 +6,10 @@ const { check } = require('express-validator')
 
 router.route("/")
     .get(projectController.getProjects)
-
     .post(projectController.createProject)
-
+    
+    router.route("/:id")
     .put(projectController.updateProject)
-
     .delete(projectController.delProject)
 
 module.exports = router
