@@ -19,7 +19,12 @@ const adminSchema = mongoose.Schema({
     },
     logs:{
         type: Array,
-        required: true
+        required: true,
+        default:[0,0,0]
     },
+    token:{
+        type: String,
+        required: true
+    }
 })
 module.exports = mongoose.model('Admin',adminSchema,'admins')

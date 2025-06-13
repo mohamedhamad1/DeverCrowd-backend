@@ -81,6 +81,23 @@
       }
     }
   },
+  "api/admin/register": {
+    "POST": {
+      "send": {
+        "data": {
+          "username": "username",
+          "nickname": "password",
+          "role": "password",
+          "password": "password"
+        }
+      },
+      "receive": {
+        "status": 201,
+        "message": "Register successful",
+        "data": {}
+      }
+    }
+  },
   "api/admin/logout": {
     "GET": {
       "send": {

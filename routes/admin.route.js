@@ -7,7 +7,7 @@ router.route("/login").post(adminController.Login);
 
 router.route("/register").post(adminController.register);
 
-router.route("/logout").get(adminController.Logout);
+router.route("/logout").post(adminController.Logout);
 
 router
   .route("/message")
