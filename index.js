@@ -1,5 +1,5 @@
 //====================Libs==============
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const adminRoutes = require("./routes/admin.route");
 const projectRoutes = require("./routes/project.route");
@@ -8,9 +8,8 @@ const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
 const bodyParser = require("body-parser");
-const mongoose = require('mongoose');
-const dbconnect = require('./config/database');
-
+const mongoose = require("mongoose");
+const dbconnect = require("./config/database");
 
 //===================server===================
 const app = express();
@@ -26,9 +25,12 @@ app.use((req, res, next) => {
   res.status(404).json({ status: "fail", data: "Page Not Found" });
 });
 
-
-
 app.listen(process.env.PORT, () => {
   console.log(`server running on http://localhost:${process.env.PORT}/`);
 });
+<<<<<<< HEAD
 //bla bla
+=======
+
+// comment here
+>>>>>>> 01659d2fd98825b48212e0b43d97a882b680fe27

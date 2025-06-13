@@ -1,19 +1,16 @@
-const getProjects = async (req, res) => { //swilam
+const getProjects = async (req, res) => {
   res.json({ data: "test" });
 };
 
-
-const createProject = async (req, res) => { //swilam
+const createProject = async (req, res) => {
   res.json({ data: "test" });
 };
 
-const updateProject = async (req, res) => { //braa
+const updateProject = async (req, res) => {
   res.json({ data: "test" });
 };
 
-const delProject = async (req, res) => { //braa
-  res.json({ data: "test" });
-}
+const delProject = async (req, res) => {};
 
 module.exports = {
   getProjects,
