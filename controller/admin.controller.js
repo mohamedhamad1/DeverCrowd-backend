@@ -1,5 +1,23 @@
+const generateJWT = require('../middlewares/generateJWT');
+const Admin = require('../models/admin.schema')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+
+
 const Login = async (req, res) => { //swilam
-  res.json({ data: "test" });
+  try {
+    res.json({ data: "test" });
+  } catch (error) {
+    
+  }
+};
+
+const register = async (req, res) => { //swilam
+  try {
+    const {username, password, role} = req.body
+  } catch (error) {
+    
+  }
 };
 
 const Logout = async (req, res) => { //swilam
@@ -14,7 +32,7 @@ const DelMessages = async (req, res) => { //swilam
   res.json({ data: "test" });
 };
 
-const GetLogs = async (req, res) => { //braa
+const GetLogs = async (req, res) => { //braa 
   res.json({ data: "test" });
 };
 
@@ -39,4 +57,5 @@ module.exports = {
   CreateLogs,
   UpdateLogs,
   DelLogs,
+  register
 };

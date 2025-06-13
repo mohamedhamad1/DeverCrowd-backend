@@ -9,15 +9,7 @@ const session = require("express-session");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-
-
-//============DB connection ===================
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("Mongodb server connected");
-  })
-  .catch((err) => console.error("MongoDB connection error:", err));
+const dbconnect = require('./config/database');
 
 
 //===================server===================
