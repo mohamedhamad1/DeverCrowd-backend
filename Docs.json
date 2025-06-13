@@ -1,5 +1,5 @@
 {
-  "api/admin/projects": {
+  "api/projects": {
     "GET": {
       "send": {},
       "receive": {
@@ -82,10 +82,10 @@
     }
   },
   "api/admin/logout": {
-    "POST": {
+    "GET": {
       "send": {
         "data": {
-          "Authorization": "Bearer <token>"
+          "AuthorizationHeader": "Bearer <token>"
         }
       },
       "receive": {
@@ -112,10 +112,61 @@
               "taskname": "name",
               "taskdate": "taskdate",
               "status": "Done",
-              "workedhours": "workedhours"
+              "workedhours": "workedhours",
+              "taskid": "taskid"
             }
           }
         ]
+      }
+    },
+    "POST": {
+      "send": {
+        "data": {
+          "nickname": "nickname",
+          "role": "role",
+          "email": "email",
+          "task": {
+            "taskname": "name",
+            "taskdate": "taskdate"
+          }
+        },
+        "receive": {
+          "status": 200,
+          "message": "Log added successfully",
+          "data": {}
+        }
+      }
+    },
+    "PUT": {
+      "send": {
+        "data": {
+          "updatednickname": "nickname",
+          "updatedrole": "role",
+          "updatedemail": "email",
+          "updatedtask": {
+            "updatedtaskname": "name",
+            "taskdate": "taskdate",
+            "updatedstatus": "Done",
+            "updatedworkedhours": "workedhours"
+          }
+        }
+      },
+      "receive": {
+        "status": 200,
+        "message": "Logs Updated successfully",
+        "data": {}
+      }
+    },
+    "DELETE": {
+      "send": {
+        "data": {
+          "taskid": "taskid"
+        }
+      },
+      "receive": {
+        "status": 200,
+        "message": "Logs Removed successfully",
+        "data": {}
       }
     }
   },
@@ -135,9 +186,22 @@
             "description": "Description",
             "title": "title",
             "knowby": "knowBy",
-            "date": "date"
+            "date": "date",
+            "messageId": "messageId"
           }
         ]
+      }
+    },
+    "DELETE": {
+      "send": {
+        "data": {
+          "MessageId": "MessageId"
+        }
+      },
+      "receive": {
+        "status": 200,
+        "message": "Message removed!",
+        "data": {}
       }
     }
   },
