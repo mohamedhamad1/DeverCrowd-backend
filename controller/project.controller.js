@@ -1,10 +1,23 @@
 const Project = require("../models/project.schema");
+const httpStatus = require("../utils/httpStatus");
+const errorHandler = require("../utils/errorHandler");
+
+
 const getProjects = async (req, res) => {
-  res.json({ data: "test" });
+    const limit = req.query.limit || 10
+    const page = req.query.page || 1
+    const skip = limit * (page - 1)
+    const projects = await Project.find().limit(limit).skip(skip)
+    res.json({status: 200, message:"Projects paginated", data:{projects}})
 };
 
 const createProject = async (req, res) => {
-  res.json({ data: "test" });
+  const {title, description, timetofinish, sponser, status, pic} = req.body
+  const newProject = new Project({
+    title, description, timetofinish, sponser, status, pic
+  })
+  await newProject.save()
+  res.json({status:201, message:httpStatus.DATA.projectCreated, data:{newProject}})
 };
 
 const updateProject = async (req, res) => {

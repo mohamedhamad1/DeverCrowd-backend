@@ -12,8 +12,8 @@ const projectSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  time_to_finish: {
-    type: Date,
+  timetofinish: {
+    type: String,
     required: true,
   },
   sponser: {
@@ -23,11 +23,6 @@ const projectSchema = mongoose.Schema({
   status: {
     type: String,
     required: true,
-  },
-  projectid: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
+  }
 });
 module.exports = mongoose.model("Project", projectSchema, "projects");
