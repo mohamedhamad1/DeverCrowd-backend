@@ -16,7 +16,7 @@ const createProject = async (req, res) => {
   const newProject = new Project({
     title, description, timetofinish, sponser, status, pic
   })
-  await newProject.save()
+  await newProject.save();
   res.json({status:201, message:httpStatus.DATA.projectCreated, data:{newProject}})
 };
 
@@ -25,7 +25,7 @@ const updateProject = async (req, res) => {
     const projectid = req.params._id;
     const { title, description, pic, time_to_finish, sponser, status } = req.body;
 
-    let project = await Project.findOne({ _id:projectid });
+    let project = await Project.find({ _id:projectid });
 
     if (!project) {
       return res.status(404).json({ status: 404, message: "Project not found" });
@@ -55,28 +55,25 @@ const updateProject = async (req, res) => {
 
 const delProject = async (req, res) => {
   try {
-    const projectId = req.params.projectId;
-    if (!projectId) {
-      return res.json({
-        status: 400,
-        message: "Project Id is required",
-        data: {},
-      });
-    }
-    const removeProject = await Project.findOne({ projectId: projectId });
+    const projectId = req.params._id;
+
+    const removedProject = await Project.findByIdAndDelete(projectId);
 
     if (!removedProject) {
-      return res.json({ status: 404, message: "Project not found", data: {} });
+      return res.status(404).json({ status: 404, message: "Project not found", data: {} });
     }
-    return res.json({
+
+    return res.status(200).json({
       status: 200,
       message: "Project deleted successfully",
       data: {},
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    res.status(500).json({ status: 500, message: "An error occurred" });
   }
 };
+
 
 module.exports = {
   getProjects,
