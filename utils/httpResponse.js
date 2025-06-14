@@ -1,13 +1,15 @@
-const STATUS = {
+const status = {
   ok: 200,
   created: 201,
   badrequest: 400,
   unauthorized: 401,
-  forbidden: 403,
+  unauthanticated: 403,
   notfound: 404
 };
-const MESSAGE = {
+const message = {
   requiredFields: "All Fields are required",
+  unauthorized:"Unauthorized user",
+  unauthanticated:"Unauthantication user",
   invalidCredentials: "Invalid credentials.",
   loginSuccess: "Login successful!",
   logoutSuccess: "Logout successful!",
@@ -38,6 +40,6 @@ const MESSAGE = {
   tokenExpiredOrInvalid: "Token is expired or invalid.",
 };
 module.exports = {
-  STATUS,
-  MESSAGE
+  status,
+  message
 };

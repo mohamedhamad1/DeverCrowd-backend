@@ -25,6 +25,10 @@ app.use((req, res, next) => {
   res.status(404).json({ status: "fail", data: "Page Not Found" });
 });
 
+app.use((err, req, res, next)=>{
+  res.json({status: err.statusText, message: err.message, code: err.statusCode || 500, data: null})
+})
+
 app.listen(process.env.PORT, () => {
   console.log(`server running on http://localhost:${process.env.PORT}/`);
 });

@@ -1,8 +1,9 @@
 const errorHandler = require('../utils/errorHandler')
 const Message = require('../models/message.schema')
-const httpStatus = require('../utils/httpStatus')
+const httpStatus = require('../utils/httpResponse')
+const asyncWrapper = require('../middlewares/asyncWrapper')
 
-const sendForm = async(req,res)=>{ //swilam
+const sendForm = asyncWrapper(async(req,res, next)=>{ //swilam
     const {username, email, numberphone, description,title, knownby} = req.body
     const newMessage = new Message({
         username,
@@ -14,7 +15,7 @@ const sendForm = async(req,res)=>{ //swilam
     })
     await newMessage.save();
     res.json({status:201, message:httpStatus.STATUS.success, data:{newMessage}})
-}
+})
 
 
 module.exports = {

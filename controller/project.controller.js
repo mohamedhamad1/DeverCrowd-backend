@@ -1,22 +1,27 @@
 const Project = require("../models/project.schema");
-const httpStatus = require("../utils/httpStatus");
+const httpResponse = require("../utils/httpResponse");
 const errorHandler = require("../utils/errorHandler");
+const asyncWrapper = require('../middlewares/asyncWrapper')
 
-const getProjects = async (req, res) => {
+const getProjects = asyncWrapper(async (req, res, next) => {
   const limit = req.query.limit || 10;
   const page = req.query.page || 1;
   const skip = limit * (page - 1);
   const projects = await Project.find().limit(limit).skip(skip);
   res.json({ status: 200, message: "Projects paginated", data: { projects } });
-};
+});
 
-const singleProject = async (req, res) => {
+const singleProject = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const project = await Project.findOne({ _id: id });
+  const project = await Project.findById(id);
+  if(!project){
+    const error = errorHandler.create(httpResponse.message.projectNotFound, httpResponse.status.fail);
+    return next(error)
+  }
   res.json({ status: 200, message: "Project Details", data: { project } });
-};
+});
 
-const createProject = async (req, res) => {
+const createProject = asyncWrapper(async (req, res, next) => {
   const { title, description, timetofinish, sponser, status, pic } = req.body;
   const newProject = new Project({
     title,
@@ -29,13 +34,13 @@ const createProject = async (req, res) => {
   await newProject.save();
   res.json({
     status: 201,
-    message: httpStatus.DATA.projectCreated,
+    message: httpResponse.message.projectCreated,
     data: { newProject },
   });
-};
+});
 
-const updateProject = async (req, res) => {
-  const id = req.params.id;
+const updateProject = asyncWrapper(async (req, res, next) => {
+  const id = req.params.id; 
   const { title, description, pic, timetofinish, sponser, status } = req.body;
   const newproject = await Project.findOneAndUpdate(
     { _id: id },
@@ -54,13 +59,17 @@ const updateProject = async (req, res) => {
     message: "updated successfully",
     data: { newproject },
   });
-};
+});
 
-const delProject = async (req, res) => {
+const delProject = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
-  await Project.findByIdAndDelete(id);
-  return res.json({ status: 200, message: "Project deleted successfully" });
-};
+  const deletedproject = await Log.findByIdAndDelete({_id:id});
+  if(!deletedproject){
+    const error = errorHandler.create(httpResponse.message.projectNotFound, httpResponse.status.fail);
+    return next(error)
+  }
+  res.json({ status: 200, message: "Project deleted successfully" });
+});
 
 module.exports = {
   getProjects,

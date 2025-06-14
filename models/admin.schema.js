@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const roles = require('../utils/adminRoles')
 const adminSchema = mongoose.Schema({
     username:{
         type: String,
@@ -7,7 +8,8 @@ const adminSchema = mongoose.Schema({
     },
     role:{
         type: String,
-        required: true
+        required: true,
+        enum: Object.values(roles)
     },
     nickname:{
         type: String,

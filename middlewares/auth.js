@@ -1,25 +1,38 @@
 const jwt = require('jsonwebtoken')
 const redis = require("../config/redis");
 const errorHandler = require('../utils/errorHandler');
-const httpStatus = require('../utils/httpStatus');
+const httpResponse = require('../utils/httpResponse');
+const asyncWrapper = require('./asyncWrapper');
 
-const verifyToken = async (req, res, next) => {
+const verifyToken = asyncWrapper(async (req, res, next) => {
   const token = req.headers.authorization;
-
-  if (!token) return res.status(401).json({ error: "No token provided" });
+  if (!token)
+    return next(errorHandler.create(httpResponse.message.tokenRequired, httpResponse.status.badrequest))
 
   const isBlacklisted = await redis.get(`blacklist:${token}`);
-  if (isBlacklisted) return res.status(401).json({ error: "Token is blacklisted" });
+  if (isBlacklisted)
+    return next(errorHandler.create(httpResponse.message.tokenExpiredOrInvalid, httpResponse.status.unauthanticated))
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    req.user = decoded;
+    req.currentUser = decoded;
     next();
   } catch (err) {
-    return res.json({status:401, message:httpStatus.DATA.tokenExpiredOrInvalid, data:{}}); 
+    return next(errorHandler.create(httpResponse.message.tokenExpiredOrInvalid, httpResponse.status.unauthanticated))
   }
-};
+});
+
+const allowedTo = (...roles)=>{
+  return(req, res, next)=>{
+    if(!roles.includes(req.currentUser.role)){
+      return next(errorHandler.create(httpResponse.message.unauthorized, httpResponse.status.unauthorized))
+    }
+    next()
+  }
+}
+
 
 module.exports = {
-  verifyToken
+  verifyToken,
+  allowedTo
 }

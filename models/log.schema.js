@@ -13,6 +13,10 @@ const logSchema = mongoose.Schema(
       type: Date,
       required: true,
     },
+    taskcategory: {
+      type: String,
+      required: true,
+    },
     workedhours: {
       type: Number, 
       required: true,
@@ -29,6 +33,6 @@ const logSchema = mongoose.Schema(
     },
   },
   { timestamps: true }
-);
+); 
 
 module.exports = mongoose.model("Log", logSchema, "logs");
