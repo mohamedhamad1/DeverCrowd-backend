@@ -14,7 +14,7 @@ const sendForm = asyncWrapper(async(req,res, next)=>{ //swilam
         knownby
     })
     await newMessage.save();
-    res.json({status:201, message:httpStatus.STATUS.success, data:{newMessage}})
+    res.json({status:201, message:httpStatus.status.success, data:{newMessage}})
 })
 
 
