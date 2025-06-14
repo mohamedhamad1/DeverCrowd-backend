@@ -17,11 +17,6 @@ const adminSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    logs:{
-        type: Array,
-        required: true,
-        default:[0,0,0]
-    },
     token:{
         type: String,
         required: true

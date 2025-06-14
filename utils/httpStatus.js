@@ -1,16 +1,21 @@
 const STATUS = {
-  success: "success",
-  fail: "fail",
-  error: "error",
+  ok: 200,
+  created: 201,
+  badrequest: 400,
+  unauthorized: 401,
+  forbidden: 403,
+  notfound: 404
 };
-const DATA = {
-  requiredFields: "Email and password are required.",
+const MESSAGE = {
+  requiredFields: "All Fields are required",
   invalidCredentials: "Invalid credentials.",
   loginSuccess: "Login successful!",
   logoutSuccess: "Logout successful!",
   queryError: "Database query failed.",
   tokenRequired: "Token is required.",
-  userNotFound: "User not found.",
+  projectNotFound: "Project not found",
+  messageNotFound: "Message not found",
+  taskNotFound: "Task not found",
   invalidID: "Invalid ID.",
   tokenValid: "Token is valid. Can log in.",
   invalidToken: "Invalid or expired token.",
@@ -34,5 +39,5 @@ const DATA = {
 };
 module.exports = {
   STATUS,
-  DATA,
+  MESSAGE
 };
