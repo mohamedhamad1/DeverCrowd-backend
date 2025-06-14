@@ -54,6 +54,10 @@ const updateProject = asyncWrapper(async (req, res, next) => {
     },
     { new: true }
   );
+  if(!newproject){
+    const error = errorHandler.create(httpResponse.message.projectNotFound, httpResponse.status.fail);
+    return next(error)
+  }
   res.json({
     staus: 200,
     message: "updated successfully",
@@ -63,7 +67,7 @@ const updateProject = asyncWrapper(async (req, res, next) => {
 
 const delProject = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
-  const deletedproject = await Log.findByIdAndDelete({_id:id});
+  const deletedproject = await Project.findByIdAndDelete({_id:id});
   if(!deletedproject){
     const error = errorHandler.create(httpResponse.message.projectNotFound, httpResponse.status.fail);
     return next(error)
