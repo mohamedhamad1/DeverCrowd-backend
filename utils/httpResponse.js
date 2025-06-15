@@ -53,6 +53,8 @@ const message = {
   messageCreated: "Message Created Successfully",
   LogNotFound: "Log not found",
   invalidjsonformat: "Invalid JSON format",
+  userNotFound: "User does not exists",
+  getuser: "User details"
 };
 module.exports = {
   status,

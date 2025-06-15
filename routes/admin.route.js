@@ -5,7 +5,7 @@ const { check } = require("express-validator");
 const adminController = require("../controller/admin.controller");
 const roles = require('../utils/adminRoles')
 
-// router.route("/:id").get(auth.verifyToken,adminController.getSingleProfile);
+router.route("/:id").get(/*auth.verifyToken,*/adminController.getSingleProfile);
 
 router.route("/authtest").get(auth.verifyToken,adminController.authtest);
 

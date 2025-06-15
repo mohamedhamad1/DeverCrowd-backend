@@ -23,6 +23,15 @@ const adminSchema = mongoose.Schema({
         type: String,
         required: true
     }
-    
 })
+
+adminSchema.virtual("tasks",{
+    ref: "Log",
+    localField: '_id',
+    foreignField: 'owner',
+})
+
+adminSchema.set('toObject', { virtuals: true });
+adminSchema.set('toJSON', { virtuals: true });
+
 module.exports = mongoose.model('Admin',adminSchema,'admins')

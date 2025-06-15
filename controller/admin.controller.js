@@ -131,13 +131,15 @@ const GetLogs = asyncWrapper(async (req, res, next) => {
 });
 
 const CreateLogs = asyncWrapper(async (req, res, next) => {
-  const { taskname, taskdescription, workedhours, status, userid } = req.body;
+  const { taskname, taskdescription, workedhours, status, taskcategory, owner } = req.body;
+  
   const newLog = new Log({
     taskname,
     taskdescription,
     workedhours,
     status,
-    userid,
+    owner,
+    taskcategory,
     taskdate: new Date(),
   });
   await newLog.save();
@@ -149,15 +151,16 @@ const CreateLogs = asyncWrapper(async (req, res, next) => {
 
 const UpdateLogs = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
-  const { taskname, description, workedhours, status, userid } = req.body;
+  const { taskname, description, workedhours, status, taskcategory, owner } = req.body;
   const newlog = await Log.findOneAndUpdate(
     { _id: id },
     {
       taskname,
       description,
       workedhours,
-      userid,
+      owner,
       status,
+      taskcategory,
     },
     { new: true }
   );
@@ -208,6 +211,36 @@ const GetSingleLog = asyncWrapper(async (req, res, next) => {
   });
 });
 
+const getSingleProfile = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const user = await Admin.findById(id).select('username role nickname').populate({
+    path: "tasks",
+    select: "taskname taskdescription taskdate taskcategory status"
+  });
+
+  
+
+   if (!user) {
+    return next(
+      errorHandler.create(
+        httpResponse.status.notfound,
+        httpResponse.message.userNotFound
+      )
+    );
+  }
+  res.json({
+    status: httpResponse.status.ok,
+    message: httpResponse.message.getuser,
+    data: {
+      username: user.username,
+      role:user.role,
+      nickname: user.nickname,
+      tasks: user.tasks
+    }
+  })
+  
+});
+
 module.exports = {
   Login,
   Logout,
@@ -220,4 +253,5 @@ module.exports = {
   register,
   authtest,
   GetSingleLog,
+  getSingleProfile,
 };

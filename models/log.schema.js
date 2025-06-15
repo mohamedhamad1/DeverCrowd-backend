@@ -26,11 +26,11 @@ const logSchema = mongoose.Schema(
       enum: ["Done", "InProgress"],
       default: "InProgress",
     },
-    userid: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Admin",
-      required: true,
-    },
+    owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Admin',
+    required: true,
+  },
   },
   { timestamps: true }
 ); 
