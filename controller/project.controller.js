@@ -1,22 +1,38 @@
 const Project = require("../models/project.schema");
-const httpStatus = require("../utils/httpStatus");
+const httpResponse = require("../utils/httpResponse");
 const errorHandler = require("../utils/errorHandler");
+const asyncWrapper = require("../middlewares/asyncWrapper");
 
-const getProjects = async (req, res) => {
+const getProjects = asyncWrapper(async (req, res, next) => {
   const limit = req.query.limit || 10;
   const page = req.query.page || 1;
   const skip = limit * (page - 1);
   const projects = await Project.find().limit(limit).skip(skip);
-  res.json({ status: 200, message: "Projects paginated", data: { projects } });
-};
+  res.json({
+    status: httpResponse.status.ok,
+    message: httpResponse.message.getProjects,
+    data: { projects },
+  });
+});
 
-const singleProject = async (req, res) => {
+const singleProject = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const project = await Project.findOne({ _id: id });
-  res.json({ status: 200, message: "Project Details", data: { project } });
-};
+  const project = await Project.findById(id);
+  if (!project) {
+    const error = errorHandler.create(
+      httpResponse.message.projectNotFound,
+      httpResponse.status.notfound
+    );
+    return next(error);
+  }
+  res.json({
+    status: httpResponse.status.ok,
+    message: httpResponse.message.getProject,
+    data: { project },
+  });
+});
 
-const createProject = async (req, res) => {
+const createProject = asyncWrapper(async (req, res, next) => {
   const { title, description, timetofinish, sponser, status, pic } = req.body;
   const newProject = new Project({
     title,
@@ -28,13 +44,13 @@ const createProject = async (req, res) => {
   });
   await newProject.save();
   res.json({
-    status: 201,
-    message: httpStatus.MESSAGE.projectCreated,
+    status: httpResponse.status.created,
+    message: httpResponse.message.projectCreated,
     data: { newProject },
   });
-};
+});
 
-const updateProject = async (req, res) => {
+const updateProject = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
   const { title, description, pic, timetofinish, sponser, status } = req.body;
   const newproject = await Project.findOneAndUpdate(
@@ -49,18 +65,35 @@ const updateProject = async (req, res) => {
     },
     { new: true }
   );
+  if (!newproject) {
+    const error = errorHandler.create(
+      httpResponse.message.projectNotFound,
+      httpResponse.status.notfound
+    );
+    return next(error);
+  }
   res.json({
-    staus: 200,
-    message: "updated successfully",
+    status: httpResponse.status.ok,
+    message: httpResponse.message.updateProject,
     data: { newproject },
   });
-};
+});
 
-const delProject = async (req, res) => {
+const delProject = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
-  await Project.findByIdAndDelete(id);
-  return res.json({ status: 200, message: "Project deleted successfully" });
-};
+  const deletedproject = await Project.findByIdAndDelete({ _id: id });
+  if (!deletedproject) {
+    const error = errorHandler.create(
+      httpResponse.message.projectNotFound,
+      httpResponse.status.notfound
+    );
+    return next(error);
+  }
+  res.json({
+    status: httpResponse.status.ok,
+    message: httpResponse.message.deleteProject,
+  });
+});
 
 module.exports = {
   getProjects,

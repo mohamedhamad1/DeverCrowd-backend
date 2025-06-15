@@ -1,8 +1,8 @@
 {
   "api/projects": {
     "GET": {
-      "send": {},
-      "receive": {
+      "request": {},
+      "response": {
         "status": 200,
         "message": "Projects fetched successfully",
         "data": [
@@ -18,7 +18,7 @@
       }
     },
     "POST": {
-      "send": {
+      "request": {
         "data": {
           "id": "project_id",
           "title": "project_title",
@@ -28,14 +28,14 @@
           "TimeToFinish": "DD/MM/YYYY"
         }
       },
-      "receive": {
+      "response": {
         "status": 201,
         "message": "Project created successfully",
         "data": {}
       }
     },
     "PUT": {
-      "send": {
+      "request": {
         "data": {
           "id": "Updated_project_id",
           "title": "Updated_project_title",
@@ -45,19 +45,19 @@
           "TimeToFinish": "DD/MM/YYYY"
         }
       },
-      "receive": {
+      "response": {
         "status": 200,
         "message": "Project updated successfully",
         "data": {}
       }
     },
     "DELETE": {
-      "send": {
+      "request": {
         "data": {
           "id": "project_id"
         }
       },
-      "receive": {
+      "response": {
         "status": 200,
         "message": "Project deleted successfully",
         "data": {}
@@ -66,13 +66,13 @@
   },
   "api/admin/login": {
     "POST": {
-      "send": {
+      "request": {
         "data": {
           "username": "username",
           "password": "password"
         }
       },
-      "receive": {
+      "response": {
         "status": 200,
         "message": "Login successful",
         "data": {
@@ -83,7 +83,7 @@
   },
   "api/admin/register": {
     "POST": {
-      "send": {
+      "request": {
         "data": {
           "username": "username",
           "nickname": "password",
@@ -91,7 +91,7 @@
           "password": "password"
         }
       },
-      "receive": {
+      "response": {
         "status": 201,
         "message": "Register successful",
         "data": {}
@@ -100,12 +100,12 @@
   },
   "api/admin/logout": {
     "GET": {
-      "send": {
+      "request": {
         "data": {
           "AuthorizationHeader": "Bearer <token>"
         }
       },
-      "receive": {
+      "response": {
         "status": 200,
         "message": "Logout successfully",
         "data": {}
@@ -114,10 +114,10 @@
   },
   "api/admin/logs": {
     "GET": {
-      "send": {
+      "request": {
         "data": {}
       },
-      "receive": {
+      "response": {
         "status": 200,
         "message": "Logs shows successfully",
         "data": [
@@ -137,7 +137,7 @@
       }
     },
     "POST": {
-      "send": {
+      "request": {
         "data": {
           "nickname": "nickname",
           "role": "role",
@@ -147,7 +147,7 @@
             "taskdate": "taskdate"
           }
         },
-        "receive": {
+        "response": {
           "status": 200,
           "message": "Log added successfully",
           "data": {}
@@ -155,7 +155,7 @@
       }
     },
     "PUT": {
-      "send": {
+      "request": {
         "data": {
           "updatednickname": "nickname",
           "updatedrole": "role",
@@ -168,19 +168,19 @@
           }
         }
       },
-      "receive": {
+      "response": {
         "status": 200,
         "message": "Logs Updated successfully",
         "data": {}
       }
     },
     "DELETE": {
-      "send": {
+      "request": {
         "data": {
           "taskid": "taskid"
         }
       },
-      "receive": {
+      "response": {
         "status": 200,
         "message": "Logs Removed successfully",
         "data": {}
@@ -189,10 +189,10 @@
   },
   "api/admin/messages": {
     "GET": {
-      "send": {
+      "request": {
         "data": {}
       },
-      "receive": {
+      "response": {
         "status": 200,
         "message": "Login successful",
         "data": [
@@ -210,12 +210,12 @@
       }
     },
     "DELETE": {
-      "send": {
+      "request": {
         "data": {
           "MessageId": "MessageId"
         }
       },
-      "receive": {
+      "response": {
         "status": 200,
         "message": "Message removed!",
         "data": {}
@@ -224,7 +224,7 @@
   },
   "api/contact": {
     "POST": {
-      "send": {
+      "request": {
         "data": {
           "username": "username",
           "email": "email",
@@ -234,7 +234,7 @@
           "knowby": "knowBy"
         }
       },
-      "receive": {
+      "response": {
         "status": 200,
         "message": "Form sent successfully",
         "data": {}

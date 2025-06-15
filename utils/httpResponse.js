@@ -1,13 +1,16 @@
-const STATUS = {
+const status = {
   ok: 200,
   created: 201,
   badrequest: 400,
   unauthorized: 401,
-  forbidden: 403,
-  notfound: 404
+  unauthanticated: 403,
+  notfound: 404,
+  Conflict : 409,
 };
-const MESSAGE = {
+const message = {
   requiredFields: "All Fields are required",
+  unauthorized: "Unauthorized user",
+  unauthanticated: "Unauthantication user",
   invalidCredentials: "Invalid credentials.",
   loginSuccess: "Login successful!",
   logoutSuccess: "Logout successful!",
@@ -19,7 +22,6 @@ const MESSAGE = {
   invalidID: "Invalid ID.",
   tokenValid: "Token is valid. Can log in.",
   invalidToken: "Invalid or expired token.",
-  messageDeleted: "Message Deleted successfully",
   messageNotExist: "Message Not Exist",
   emailRequired: "Email is required.",
   sendingOTP: "OTP sended successfully",
@@ -36,8 +38,22 @@ const MESSAGE = {
   userExist: "User is already in use.",
   accountCreated: "Account created successfully.",
   tokenExpiredOrInvalid: "Token is expired or invalid.",
+  getProjects: "Pojects fetched successfully",
+  getLogs: "Logs fetched successfully",
+  getMessages: "Messages fetched successfully",
+  getProject: "Project Details",
+  getLog: "Log Details",
+  getMessage: "Message Details",
+  updateProject: "Project Updated Successfully",
+  updateLog: "Log Updated Successfully",
+  updateMessage: "Message Updated Successfully",
+  deleteProject: "Project Deleted Successfully",
+  deleteLog: "Log Deleted Successfully",
+  deleteMessage: "Message Deleted Successfully",
+  messageCreated: "Message Created Successfully",
+  LogNotFound: "Log not found"
 };
 module.exports = {
-  STATUS,
-  MESSAGE
+  status,
+  message,
 };

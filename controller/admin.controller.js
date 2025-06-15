@@ -6,27 +6,26 @@ const Log = require("../models/log.schema");
 const bcrypt = require("bcryptjs");
 const redis = require("../config/redis");
 const jwt = require("jsonwebtoken");
-const httpStatus = require("../utils/httpStatus");
+const httpResponse = require("../utils/httpResponse");
+const asyncWrapper = require("../middlewares/asyncWrapper");
 
-const Login = async (req, res) => {
-  //swilam
-
+const Login = asyncWrapper(async (req, res, next) => {
   const { username, password } = req.body;
   const user = await Admin.findOne({ username });
   if (!user) {
-    res.json({
-      status: 400,
-      message: httpStatus.MESSAGE.invalidCredentials,
-      data: {},
-    });
+    const error = errorHandler.create(
+      httpResponse.message.invalidCredentials,
+      httpResponse.status.unauthorized
+    );
+    return next(error);
   }
   const matchedPassword = await bcrypt.compare(password, user.password);
   if (!matchedPassword) {
-    res.json({
-      status: 400,
-      message: httpStatus.MESSAGE.invalidCredentials,
-      data: {},
-    });
+    const error = errorHandler.create(
+      httpResponse.message.invalidCredentials,
+      httpResponse.status.unauthorized
+    );
+    return next(error);
   }
   const token = await JWThandler.generateJWT({
     username: user.username,
@@ -34,24 +33,21 @@ const Login = async (req, res) => {
     id: user._id,
   });
   res.json({
-    status: 200,
-    message: httpStatus.MESSAGE.loginSuccess,
+    status: httpResponse.message.ok,
+    message: httpResponse.message.loginSuccess,
     data: { token },
   });
-};
+});
 
-const register = async (req, res) => {
-  //swilam
-
+const register = asyncWrapper(async (req, res, next) => {
   const { username, password, role, nickname } = req.body;
   const admin = await Admin.findOne({ username: username });
   if (admin) {
     const error = errorHandler.create(
-      httpStatus.MESSAGE.userExist,
-      400,
-      httpStatus.STATUS.fail
+      httpResponse.message.userExist,
+      httpResponse.status.Conflict
     );
-    res.json({ status: 400, message: httpStatus.MESSAGE.userExist, data: {} });
+    return next(error);
   }
   const passwordHashing = await bcrypt.hash(password, 10);
   const newAdmin = new Admin({
@@ -67,68 +63,74 @@ const register = async (req, res) => {
   newAdmin.token = token;
   await newAdmin.save();
   res.json({
-    status: 201,
-    message: "Register successful",
+    status: httpResponse.status.created,
+    message: httpResponse.message.accountCreated,
     data: { user: newAdmin },
   });
-};
+});
 
-const Logout = async (req, res) => {
-  //swilam
-
+const Logout = asyncWrapper(async (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
-    res.json({
-      status: 400,
-      message: httpStatus.MESSAGE.tokenRequired,
-      data: {},
-    });
+    const error = errorHandler.create(
+      httpResponse.message.invalidToken,
+      httpResponse.status.badrequest
+    );
   }
-
   await JWThandler.blacklistJWT(token);
-  res.json({ status: 200, message: httpStatus.MESSAGE.logoutSuccess });
-};
+  res.json({
+    status: httpResponse.status.ok,
+    message: httpResponse.message.logoutSuccess,
+  });
+});
 
-const authtest = async (req, res) => {
-  //swilam
+const authtest = asyncWrapper(async (req, res, next) => {
   const token = req.headers.authorization;
   res.json({ token });
-};
+});
 
-const GetMessages = async (req, res) => {
+const GetMessages = asyncWrapper(async (req, res, next) => {
   const limit = req.query.limit || 10;
   const page = req.query.page || 1;
   const skip = limit * (page - 1);
   const messages = await Message.find().limit(limit).skip(skip);
-  res.json({ status: 200, message: "Messages paginated", data: { messages } });
-};
+  res.json({
+    status: httpResponse.status.ok,
+    message: httpResponse.message.getMessages,
+    data: { messages },
+  });
+});
 
-const DelMessages = async (req, res) => {
-  //swilam
+const DelMessages = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-
   const message = await Message.findOne({ _id: id });
   if (!message) {
-    return res.json({
-      status: 400,
-      message: httpStatus.MESSAGE.messageNotExist,
-    });
+    const error = errorHandler.create(
+      httpResponse.message.messageNotFound,
+      httpResponse.status.notfound
+    );
+    return next(error);
   }
   const data = await Message.deleteOne({ _id: id });
-  res.json({ status: 200, message: httpStatus.MESSAGE.messageDeleted });
-};
+  res.json({
+    status: httpResponse.status.ok,
+    message: httpResponse.message.deleteMessage,
+  });
+});
 
-const GetLogs = async (req, res) => {
-  //swilam
+const GetLogs = asyncWrapper(async (req, res, next) => {
   const limit = req.query.limit || 10;
   const page = req.query.page || 1;
   const skip = limit * (page - 1);
   const logs = await Log.find().limit(limit).skip(skip);
-  res.json({ status: 200, message: "Projects paginated", data: { logs } });
-};
+  res.json({
+    status: httpResponse.status.ok,
+    message: httpResponse.message.getLogs,
+    data: { logs },
+  });
+});
 
-const CreateLogs = async (req, res) => {
-  //swilam
+const CreateLogs = asyncWrapper(async (req, res, next) => {
   const { taskname, taskdescription, workedhours, status, victim } = req.body;
   const newLog = new Log({
     taskname,
@@ -139,11 +141,13 @@ const CreateLogs = async (req, res) => {
     taskdate: new Date(),
   });
   await newLog.save();
-  res.json({ status: 200, message: "Done" });
-};
+  res.json({
+    status: httpResponse.status.created,
+    message: httpResponse.message.CreateLogs,
+  });
+});
 
-const UpdateLogs = async (req, res) => {
-  //braa
+const UpdateLogs = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
   const { taskname, description, workedhours, status, victim } = req.body;
   const newlog = await Log.findOneAndUpdate(
@@ -157,22 +161,52 @@ const UpdateLogs = async (req, res) => {
     },
     { new: true }
   );
-  res.json({ staus: 200, message: "updated successfully", data: { newlog } });
-};
+  if (!newlog) {
+    const error = errorHandler.create(
+      httpResponse.message.LogNotFound,
+      httpResponse.status.notfound
+    );
+    return next(error);
+  }
+  res.json({
+    staus: httpResponse.status.ok,
+    message: httpRespons.message.UpdateLogs,
+    data: { newlog },
+  });
+});
 
-const DelLogs = async (req, res) => {
-  //braa
+const DelLogs = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
-  await Log.findByIdAndDelete(id);
-  return res.json({ status: 200, message: "Log deleted successfully" });
-};
+  const deletedLog = await Log.findByIdAndDelete({ _id: id });
+  if (!deletedLog) {
+    const error = errorHandler.create(
+      httpResponse.message.notfound,
+      httpResponse.status.notfound
+    );
+    return next(error);
+  }
+  res.json({
+    status: httpResponse.status.ok,
+    message: httpResponse.message.deleteLog,
+  });
+});
 
-const GetSingleLog = async (req, res) => {
-  //braa
+const GetSingleLog = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const log = await Log.findOne({ _id: id });
-  res.json({ status: 200, message: "Project Details", data: { log } });
-};
+  if (!log) {
+    const error = errorHandler.create(
+      httpResponse.message.notfound,
+      httpResponse.status.notfound
+    );
+    return next(error);
+  }
+  res.json({
+    status: httpResponse.status.ok,
+    message: httpResponse.message.getLog,
+    data: { log },
+  });
+});
 
 module.exports = {
   Login,
