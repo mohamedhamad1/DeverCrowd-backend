@@ -51,7 +51,8 @@ const message = {
   deleteLog: "Log Deleted Successfully",
   deleteMessage: "Message Deleted Successfully",
   messageCreated: "Message Created Successfully",
-  LogNotFound: "Log not found"
+  LogNotFound: "Log not found",
+  invalidjsonformat: "Invalid JSON format",
 };
 module.exports = {
   status,

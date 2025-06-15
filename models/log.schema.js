@@ -26,7 +26,7 @@ const logSchema = mongoose.Schema(
       enum: ["Done", "InProgress"],
       default: "InProgress",
     },
-    victim: {
+    userid: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Admin",
       required: true,

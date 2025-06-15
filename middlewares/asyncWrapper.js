@@ -1,6 +1,10 @@
 module.exports = (asyncFn)=>{
     return(req, res, next)=>{
         asyncFn(req,res,next)
-        .catch((err)=>{next(err)})
+        .catch((err)=>{
+            err.status = 500
+            err.message = "bad request"
+            next(err);
+        })
     }
 }

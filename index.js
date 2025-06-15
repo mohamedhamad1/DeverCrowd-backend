@@ -10,6 +10,7 @@ const passport = require("passport");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dbconnect = require("./config/database");
+const httpResponse = require('./utils/httpResponse')
  
 //===================server===================
 const app = express();
@@ -26,7 +27,11 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next)=>{
-  res.json({status: err.statusText, message: err.message, code: err.statusCode || 500, data: null})
+  // console.log(err);
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.status(400).json({ status: httpResponse.status.badrequest, message: httpResponse.message.invalidjsonformat, data: null });
+  }
+  res.status(err.statusCode || 500).json({message: err.message, status: err.statusCode || 500, data: null})
 })
 
 app.listen(process.env.PORT, () => {

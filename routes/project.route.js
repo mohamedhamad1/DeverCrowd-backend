@@ -10,7 +10,7 @@ const { check } = require("express-validator");
 router
   .route("/")
   .get(projectController.getProjects)
-  .post(auth.verifyToken,auth.allowedTo(roles.ceo,roles.backend), projectController.createProject);
+  .post(auth.verifyToken, projectController.createProject);
 
 router
   .route("/:id")

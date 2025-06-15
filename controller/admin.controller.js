@@ -65,7 +65,7 @@ const register = asyncWrapper(async (req, res, next) => {
   res.json({
     status: httpResponse.status.created,
     message: httpResponse.message.accountCreated,
-    data: { user: newAdmin },
+    data: null,
   });
 });
 
@@ -131,13 +131,13 @@ const GetLogs = asyncWrapper(async (req, res, next) => {
 });
 
 const CreateLogs = asyncWrapper(async (req, res, next) => {
-  const { taskname, taskdescription, workedhours, status, victim } = req.body;
+  const { taskname, taskdescription, workedhours, status, userid } = req.body;
   const newLog = new Log({
     taskname,
     taskdescription,
     workedhours,
     status,
-    victim,
+    userid,
     taskdate: new Date(),
   });
   await newLog.save();
@@ -149,14 +149,14 @@ const CreateLogs = asyncWrapper(async (req, res, next) => {
 
 const UpdateLogs = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
-  const { taskname, description, workedhours, status, victim } = req.body;
+  const { taskname, description, workedhours, status, userid } = req.body;
   const newlog = await Log.findOneAndUpdate(
     { _id: id },
     {
       taskname,
       description,
       workedhours,
-      victim,
+      userid,
       status,
     },
     { new: true }
@@ -170,7 +170,7 @@ const UpdateLogs = asyncWrapper(async (req, res, next) => {
   }
   res.json({
     staus: httpResponse.status.ok,
-    message: httpRespons.message.UpdateLogs,
+    message: httpResponse.message.updateLog,
     data: { newlog },
   });
 });

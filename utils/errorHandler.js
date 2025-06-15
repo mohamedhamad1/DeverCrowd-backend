@@ -2,10 +2,10 @@ class ErorHandler extends Error{
     constructor(){
         super();
     }
-    create(message, statusCode, statusText){
+    create(message, statusCode){
         this.message = message;
         this.statusCode = statusCode;
-        this.statusText = statusText;
+        console.log(this);
         return this;
     }
 }
