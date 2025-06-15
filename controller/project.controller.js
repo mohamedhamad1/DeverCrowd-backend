@@ -29,7 +29,7 @@ const createProject = async (req, res) => {
   await newProject.save();
   res.json({
     status: 201,
-    message: httpStatus.DATA.projectCreated,
+    message: httpStatus.MESSAGE.projectCreated,
     data: { newProject },
   });
 };
