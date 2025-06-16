@@ -18,9 +18,8 @@ const getAllProfiles = asyncWrapper(async (req, res, next) => {
   const admins = await Admin.find()
     .limit(limit)
     .skip(skip)
-    .select("username role nickname tasksnumber tasksdone tasks")
-
-    .populate(
+    .select("-password -token -_v")
+    .populate([
       {
         path: "tasks",
         select: "title type deadline",
@@ -28,8 +27,8 @@ const getAllProfiles = asyncWrapper(async (req, res, next) => {
       {
         path: "comments",
         select: "username userid commenttext",
-      }
-    );
+      },
+    ]);
   console.log(admins);
   res.json({
     status: httpResponse.status.ok,
@@ -41,16 +40,18 @@ const getAllProfiles = asyncWrapper(async (req, res, next) => {
 const getSingleProfile = asyncWrapper(async (req, res, next) => {
   const id = req.params.id || req.user.id;
 
-  const user = await Admin.findById(id).select("-password -token").populate(
-    {
-      path: "tasks",
-      select: "title description type deadline status references",
-    },
-    {
-      path: "comments",
-      select: "username userid commenttext",
-    }
-  );
+  const user = await Admin.findById(id)
+    .select("-password -token -_v")
+    .populate([
+      {
+        path: "tasks",
+        select: "title description type deadline status references",
+      },
+      {
+        path: "comments",
+        select: "username userid commenttext",
+      },
+    ]);
 
   if (!user) {
     return next(
@@ -123,7 +124,15 @@ const createTask = asyncWrapper(async (req, res, next) => {
     references,
     type,
   });
+
   await newtask.save();
+
+  await Promise.all(
+    assignedto.map((adminid) =>
+      Admin.findByIdAndUpdate(adminid, { $inc: { tasksnumber: 1 } })
+    )
+  );
+
   res.json({
     status: httpResponse.status.created,
     message: httpResponse.message.createTask,
@@ -141,6 +150,11 @@ const deleteTask = asyncWrapper(async (req, res, next) => {
     );
     return next(error);
   }
+  await Promise.all(
+    assignedto.map((adminid) =>
+      Admin.findByIdAndUpdate(adminid, { $inc: { tasksnumber: -1 } })
+    )
+  );
   res.json({
     status: httpResponse.status.ok,
     message: httpResponse.message.deleteTask,
@@ -162,7 +176,6 @@ const postComment = asyncWrapper(async (req, res, next) => {
     commenttext,
     userid: req.user.id,
     username: req.user.username,
-    createdat: moment(Date.now()).format("DD MM YYYY hh:mm"),
   });
   await newComment.save();
   res.json({

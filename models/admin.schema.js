@@ -24,12 +24,12 @@ const adminSchema = mongoose.Schema({
     required: true,
   },
   tasksnumber: {
-    type: String,
+    type: Number,
     required: true,
     default: 0,
   },
   tasksdone: {
-    type: String,
+    type: Number,
     required: true,
     default: 0,
   },

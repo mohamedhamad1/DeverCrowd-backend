@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/log", logRoutes);
-app.use("/api/project", projectRoutes);
+app.use("/api/projects", projectRoutes);
 app.use("/api/contact", contactRoutes);
 
 app.use((req, res, next) => {
