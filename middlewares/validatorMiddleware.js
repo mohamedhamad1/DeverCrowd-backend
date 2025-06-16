@@ -5,7 +5,7 @@ const validateMiddleware = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = errorHandler.create(
-        "Error",
+        "Validation Error",
         httpResponse.status.badrequest,
         {
             errors: errors.array().map(err => ({
