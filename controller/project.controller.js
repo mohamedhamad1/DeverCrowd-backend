@@ -7,7 +7,15 @@ const getProjects = asyncWrapper(async (req, res, next) => {
   const limit = req.query.limit || 10;
   const page = req.query.page || 1;
   const skip = limit * (page - 1);
-  const projects = await Project.find().limit(limit).skip(skip);
+  let projects;
+  if (req.role == "viewer") {
+    projects = await Project.find({ status: "completed" })
+      .select("title description pic category")
+      .limit(limit)
+      .skip(skip);
+  } else {
+    projects = await Project.find().limit(limit).skip(skip);
+  }
   res.json({
     status: httpResponse.status.ok,
     message: httpResponse.message.getProjects,
@@ -17,6 +25,7 @@ const getProjects = asyncWrapper(async (req, res, next) => {
 
 const singleProject = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
+  console.log(req);
   const project = await Project.findById(id);
   if (!project) {
     const error = errorHandler.create(
@@ -33,17 +42,19 @@ const singleProject = asyncWrapper(async (req, res, next) => {
 });
 
 const createProject = asyncWrapper(async (req, res, next) => {
-  const { title, description, timetofinish, sponser, status, pic } = req.body;
+  const { title, description, timetofinish, client, status, pic, category } =
+    req.body;
   const newProject = new Project({
     title,
     description,
     timetofinish,
-    sponser,
+    client,
     status,
     pic,
+    category,
   });
   await newProject.save();
-  res.json({
+  res.status(201).json({
     status: httpResponse.status.created,
     message: httpResponse.message.projectCreated,
     data: { newProject },
@@ -52,7 +63,7 @@ const createProject = asyncWrapper(async (req, res, next) => {
 
 const updateProject = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
-  const { title, description, pic, timetofinish, sponser, status } = req.body;
+  const { title, description, pic, timetofinish, client, status, category } = req.body;
   const newproject = await Project.findOneAndUpdate(
     { _id: id },
     {
@@ -60,8 +71,9 @@ const updateProject = asyncWrapper(async (req, res, next) => {
       description,
       pic,
       timetofinish,
-      sponser,
+      client,
       status,
+      category,
     },
     { new: true }
   );

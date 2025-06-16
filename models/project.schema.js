@@ -16,13 +16,29 @@ const projectSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  sponser: {
+  client: {
     type: String,
     required: true,
   },
   status: {
     type: String,
     required: true,
-  }
+    enum: ["pending", "in progress", "review", "completed"],
+    default: "pending",
+  },
+  cost: {
+    type: Number,
+    required: true,
+    default:0,
+  },
+  timespend: {
+    type: String,
+    required: true,
+    default:0,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
 });
 module.exports = mongoose.model("Project", projectSchema, "projects");
