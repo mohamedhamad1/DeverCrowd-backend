@@ -32,7 +32,7 @@ const getAllProfiles = asyncWrapper(async (req, res, next) => {
 });
 
 const getSingleProfile = asyncWrapper(async (req, res, next) => {
-  const { id } = req.params;
+  const id = req.params.id || req.user.id;
 
   const user = await Admin.findById(id)
     .select("username role nickname")
@@ -75,7 +75,7 @@ const getAllTasks = asyncWrapper(async (req, res, next) => {
 
 const updateTask = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
-  const { title, description, deadline, assignedTo, status, references } =
+  const { title, description, deadline, assignedto, status, references } =
     req.body;
   const newtask = await Task.findOneAndUpdate(
     { _id: id },
@@ -83,7 +83,7 @@ const updateTask = asyncWrapper(async (req, res, next) => {
       title,
       description,
       deadline,
-      assignedTo,
+      assignedto,
       status,
       references,
     },
@@ -104,13 +104,13 @@ const updateTask = asyncWrapper(async (req, res, next) => {
 });
 
 const createTask = asyncWrapper(async (req, res, next) => {
-  const { title, description, deadline, assingedto, status, references, type } =
+  const { title, description, deadline, assignedto, status, references, type } =
     req.body;
   const newtask = new Task({
     title,
     description,
     deadline,
-    assingedto,
+    assignedto,
     status,
     references,
     type,

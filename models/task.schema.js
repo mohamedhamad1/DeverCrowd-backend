@@ -10,10 +10,12 @@ const taskSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    assingedto: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
+    assignedto: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+      },
+    ],
     type: {
       type: String,
       required: true,

@@ -5,9 +5,18 @@ const { check } = require("express-validator");
 const logController = require("../controller/log.controller");
 const roles = require("../utils/adminRoles");
 
-router.route("/profiles").get(logController.getAllProfiles);
+router
+  .route("/profiles")
+  .get(
+    auth.verifyToken,
+    auth.allowedTo(roles.ceo, roles.cto),
+    logController.getAllProfiles
+  );
 
-router.route("/profiles/:id").get(logController.getSingleProfile);
+router
+  .route("/profile/:id")
+  .get(auth.verifyToken, logController.getSingleProfile);
+router.route("/profile").get(auth.verifyToken, logController.getSingleProfile);
 
 router
   .route("/tasks")
