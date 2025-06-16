@@ -4,6 +4,8 @@ const auth = require("../middlewares/auth");
 const { check } = require("express-validator");
 const adminController = require("../controller/admin.controller");
 const roles = require('../utils/adminRoles')
+const validator = require('../utils/validator')
+const validatorMiddleware = require('../middlewares/validatorMiddleware')
 
 router.route("/authtest").get(auth.verifyToken,adminController.authtest);
 

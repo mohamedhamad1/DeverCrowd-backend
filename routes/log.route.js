@@ -4,6 +4,8 @@ const auth = require("../middlewares/auth");
 const { check } = require("express-validator");
 const logController = require("../controller/log.controller");
 const roles = require("../utils/adminRoles");
+const validator = require('../utils/validator')
+const validatorMiddleware = require('../middlewares/validatorMiddleware')
 
 router
   .route("/profiles")

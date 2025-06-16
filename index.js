@@ -29,7 +29,6 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next)=>{
-  // console.log(err);
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({ status: httpResponse.status.badrequest, message: httpResponse.message.invalidjsonformat, data: null });
   }
