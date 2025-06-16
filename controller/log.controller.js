@@ -76,7 +76,6 @@ const getAllTasks = asyncWrapper(async (req, res, next) => {
 const updateTask = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
   const { title, description, deadline, assignedTo, status, references, type } =
-
     req.body;
   const newtask = await Task.findOneAndUpdate(
     { _id: id },
