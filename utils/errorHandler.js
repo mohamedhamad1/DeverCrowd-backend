@@ -6,7 +6,6 @@ class ErorHandler extends Error{
         this.message = message;
         this.statusCode = statusCode;
         this.errors = errors
-        console.log(this);
         return this;
     }
 }

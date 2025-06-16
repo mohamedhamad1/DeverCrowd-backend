@@ -23,7 +23,6 @@ const getAllProfiles = asyncWrapper(async (req, res, next) => {
       path: 'tasks',
       select: "title type deadline"
     });
-  console.log(admins);
   res.json({
     status: httpResponse.status.ok,
     message: httpResponse.message.getAllUsers,
@@ -35,10 +34,9 @@ const getSingleProfile = asyncWrapper(async (req, res, next) => {
   const id = req.params.id || req.user.id;
 
   const user = await Admin.findById(id)
-    .select("username role nickname")
+    .select("-password -token")
     .populate({
       path: "tasks",
-      select: "title description type deadline status references",
     });
 
   if (!user) {
@@ -53,10 +51,7 @@ const getSingleProfile = asyncWrapper(async (req, res, next) => {
     status: httpResponse.status.ok,
     message: httpResponse.message.getSingleUser,
     data: {
-      username: user.username,
-      role: user.role,
-      nickname: user.nickname,
-      tasks: user.tasks,
+      user
     },
   });
 });
