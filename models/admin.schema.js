@@ -22,13 +22,23 @@ const adminSchema = mongoose.Schema({
     token:{
         type: String,
         required: true
-    }
+    },
+    tasksnumber:{
+        type: String,
+        required:true,
+        default:0
+    },
+    tasksdone:{
+        type: String,
+        required:true,
+        default:0
+    },
 })
 
 adminSchema.virtual("tasks",{
-    ref: "Log",
+    ref: "Task",
     localField: '_id',
-    foreignField: 'owner',
+    foreignField: 'assingedTo',
 })
 
 adminSchema.set('toObject', { virtuals: true });

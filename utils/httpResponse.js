@@ -54,8 +54,22 @@ const message = {
   LogNotFound: "Log not found",
   invalidjsonformat: "Invalid JSON format",
   userNotFound: "User does not exists",
-  getuser: "User details"
-};
+  getuser: "User details",
+
+  gettask: "User details",
+  createTask: "User details",
+  updateTask: "User details",
+  deleteTask: "User details",
+
+  getComments: "User details",
+  createComment: "User details",
+  deleteComment: "User details",
+  commentNotFound: "User details",
+
+  getAllUsers: "User details",
+  getSingleUser: "User details",
+}
+
 module.exports = {
   status,
   message,

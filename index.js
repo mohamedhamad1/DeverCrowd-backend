@@ -4,6 +4,7 @@ const express = require("express");
 const adminRoutes = require("./routes/admin.route");
 const projectRoutes = require("./routes/project.route");
 const contactRoutes = require("./routes/message.route");
+const logRoutes = require("./routes/log.route");
 const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use("/api/admin", adminRoutes);
+app.use("/api/admin/log", logRoutes);
 app.use("/api/project", projectRoutes);
 app.use("/api/contact", contactRoutes);
 

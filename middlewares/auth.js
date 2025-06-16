@@ -15,7 +15,7 @@ const verifyToken = asyncWrapper(async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    req.currentUser = decoded;
+    req.user = decoded;
     next();
   } catch (err) {
     return next(errorHandler.create(httpResponse.message.tokenExpiredOrInvalid, httpResponse.status.unauthanticated))
@@ -24,7 +24,7 @@ const verifyToken = asyncWrapper(async (req, res, next) => {
 
 const allowedTo = (...roles)=>{
   return(req, res, next)=>{
-    if(!roles.includes(req.currentUser.role)){
+    if(!roles.includes(req.user.role)){
       return next(errorHandler.create(httpResponse.message.unauthorized, httpResponse.status.unauthorized))
     }
     next()
