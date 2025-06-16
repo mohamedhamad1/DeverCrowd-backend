@@ -6,7 +6,7 @@ const commentSchema = mongoose.Schema(
       required: true,
     },
     userid: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
     username: {
