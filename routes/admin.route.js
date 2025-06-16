@@ -16,6 +16,6 @@ router.route("/logout").post(auth.verifyToken, adminController.Logout);
 router.route("/message").get(auth.verifyToken, adminController.GetMessages);
 
 router.route("/message/:id").delete(auth.verifyToken, auth.allowedTo(roles.ceo,roles.backend), adminController.DelMessages);
-//asdf
+
 
 module.exports = router;

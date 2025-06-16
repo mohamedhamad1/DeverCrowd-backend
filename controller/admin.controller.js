@@ -31,11 +31,13 @@ const Login = asyncWrapper(async (req, res, next) => {
     role: user.role,
     id: user._id,
   });
+  console.log(req.user);
   res.json({
     status: httpResponse.message.ok,
     message: httpResponse.message.loginSuccess,
     data: { token },
   });
+  
 });
 
 const register = asyncWrapper(async (req, res, next) => {

@@ -38,7 +38,7 @@ const adminSchema = mongoose.Schema({
 adminSchema.virtual("tasks",{
     ref: "Task",
     localField: '_id',
-    foreignField: 'assingedTo',
+    foreignField: 'assingedto',
 })
 
 adminSchema.set('toObject', { virtuals: true });

@@ -16,6 +16,7 @@ const verifyToken = asyncWrapper(async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.user = decoded;
+    console.log(decoded);
     next();
   } catch (err) {
     return next(errorHandler.create(httpResponse.message.tokenExpiredOrInvalid, httpResponse.status.unauthanticated))

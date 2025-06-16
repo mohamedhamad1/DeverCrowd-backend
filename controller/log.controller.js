@@ -9,12 +9,21 @@ const httpResponse = require("../utils/httpResponse");
 const asyncWrapper = require("../middlewares/asyncWrapper");
 const Admin = require("../models/admin.schema");
 const Comment = require("../models/comment.schema");
+const moment = require("moment");
 
 const getAllProfiles = asyncWrapper(async (req, res, next) => {
-  const limit = req.query.limit || 4;
+  const limit = req.query.limit || 100;
   const page = req.query.page || 1;
   const skip = limit * (page - 1);
-  const admins = await Admin.find().limit(limit).skip(skip);
+  const admins = await Admin.find()
+    .limit(limit)
+    .skip(skip)
+    .select("username role nickname tasksnumber tasksdone tasks")
+    .populate({
+      path: 'tasks',
+      select: "title type deadline"
+    });
+  console.log(admins);
   res.json({
     status: httpResponse.status.ok,
     message: httpResponse.message.getAllUsers,
@@ -24,11 +33,12 @@ const getAllProfiles = asyncWrapper(async (req, res, next) => {
 
 const getSingleProfile = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
+
   const user = await Admin.findById(id)
     .select("username role nickname")
     .populate({
       path: "tasks",
-      select: "taskname taskdescription taskdate taskcategory status",
+      select: "title description type deadline status references",
     });
 
   if (!user) {
@@ -94,15 +104,16 @@ const updateTask = asyncWrapper(async (req, res, next) => {
 });
 
 const createTask = asyncWrapper(async (req, res, next) => {
-  const { title, description, deadline, assignedTo, status, references } =
+  const { title, description, deadline, assingedto, status, references, type } =
     req.body;
   const newtask = new Task({
     title,
     description,
     deadline,
-    assignedTo,
+    assingedto,
     status,
     references,
+    type,
   });
   await newtask.save();
   res.json({
@@ -138,12 +149,12 @@ const getAllComments = asyncWrapper(async (req, res, next) => {
 });
 
 const postComment = asyncWrapper(async (req, res, next) => {
-  const { commentText } = req.body;
+  const { commenttext } = req.body;
   const newComment = Comment({
-    commentText,
+    commenttext,
     userid: req.user.id,
     username: req.user.username,
-    createdat: moment(Date.now()).format("YYYY-MM-DD"),
+    createdat: moment(Date.now()).format("DD MM YYYY hh:mm"),
   });
   await newComment.save();
   res.json({

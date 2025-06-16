@@ -4,6 +4,7 @@ module.exports = (asyncFn)=>{
         .catch((err)=>{
             err.status = 500
             err.message = "bad request"
+            console.log(err)
             next(err);
         })
     }
