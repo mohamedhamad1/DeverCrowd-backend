@@ -24,6 +24,8 @@ app.use("/api/admin/log", logRoutes);
 app.use("/api/project", projectRoutes);
 app.use("/api/contact", contactRoutes);
 
+app.use('/uploads', express.static('uploads'));
+
 app.use((req, res, next) => {
   res.status(404).json({ status: "fail", data: "Page Not Found" });
 });
