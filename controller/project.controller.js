@@ -79,7 +79,6 @@ const updateProject = asyncWrapper(async (req, res, next) => {
     );
     return next(error);
   }
-
   project.title = title || project.title;
   project.description = description || project.description;
   project.pic = req.file?.path || project.pic;
@@ -89,9 +88,7 @@ const updateProject = asyncWrapper(async (req, res, next) => {
   project.category = category || project.category;
   project.cost = cost || project.cost;
   project.timespend = timespend || project.timespend;
-
   await project.save();
-  
   res.json({
     status: httpResponse.status.ok,
     message: httpResponse.message.updateProject,
