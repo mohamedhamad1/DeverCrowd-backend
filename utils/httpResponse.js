@@ -3,9 +3,9 @@ const status = {
   created: 201,
   badrequest: 400,
   unauthorized: 401,
-  forbidden: 403,
+  unauthenticated: 403,
   notfound: 404,
-  Conflict: 409,
+  conflict: 409,
 };
 const message = {
   requiredFields: "All fields are required.",

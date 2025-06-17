@@ -29,7 +29,6 @@ const getAllProfiles = asyncWrapper(async (req, res, next) => {
         select: "username userid commenttext",
       },
     ]);
-  console.log(admins);
   res.json({
     status: httpResponse.status.ok,
     message: httpResponse.message.getAllUsers,
@@ -84,8 +83,10 @@ const getAllTasks = asyncWrapper(async (req, res, next) => {
 
 const updateTask = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
-  const { title, description, deadline, assignedTo, status, references, type } =
+  const { title, description, deadline, assignedto, status, references, type } =
     req.body;
+    console.log(req.body);
+    
   const newtask = await Task.findOneAndUpdate(
     { _id: id },
     {
@@ -95,6 +96,7 @@ const updateTask = asyncWrapper(async (req, res, next) => {
       assignedto,
       status,
       references,
+      type
     },
     { new: true }
   );
@@ -127,11 +129,12 @@ const createTask = asyncWrapper(async (req, res, next) => {
 
   await newtask.save();
 
-  await Promise.all(
-    assignedto.map((adminid) =>
-      Admin.findByIdAndUpdate(adminid, { $inc: { tasksnumber: 1 } })
-    )
+//=============== Promise is a honey but not the best type ;) ===================
+  await Admin.updateMany(
+    { _id: { $in: assignedto } },
+    { $inc: { tasksnumber: 1 } }
   );
+//===============================================================================
 
   res.json({
     status: httpResponse.status.created,
@@ -142,18 +145,21 @@ const createTask = asyncWrapper(async (req, res, next) => {
 
 const deleteTask = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
-  const deletedtask = await Task.findByIdAndDelete({ _id: id });
-  if (!deletedtask) {
+  const task = await Task.findById(id)
+ 
+  if (!task) {
     const error = errorHandler.create(
       httpResponse.message.taskNotFound,
       httpResponse.status.notfound
     );
     return next(error);
   }
-  await Promise.all(
-    assignedto.map((adminid) =>
-      Admin.findByIdAndUpdate(adminid, { $inc: { tasksnumber: -1 } })
-    )
+  const assignedto = task.assignedto
+  await Task.deleteOne({ _id: id });
+
+  await Admin.updateMany(
+    { _id: { $in: assignedto } },
+    { $inc: { tasksnumber: -1 } }
   );
   res.json({
     status: httpResponse.status.ok,
@@ -162,7 +168,9 @@ const deleteTask = asyncWrapper(async (req, res, next) => {
 });
 
 const getAllComments = asyncWrapper(async (req, res, next) => {
-  const comments = await Comment.find().sort({ createdat: 1 });
+  const comments = await Comment.find({ userid: req.user.id }).sort({
+    createdat: 1,
+  });
   res.json({
     status: httpResponse.status.ok,
     message: httpResponse.message.getComments,
@@ -171,7 +179,14 @@ const getAllComments = asyncWrapper(async (req, res, next) => {
 });
 
 const postComment = asyncWrapper(async (req, res, next) => {
-  const { commenttext } = req.body;
+  const { commenttext, userid } = req.body;
+  if (userid != req.user.id) {
+    const error = errorHandler.create(
+      httpResponse.message.unauthorized,
+      httpResponse.status.unauthorized
+    );
+    return next(error);
+  }
   const newComment = Comment({
     commenttext,
     userid: req.user.id,
@@ -187,19 +202,17 @@ const postComment = asyncWrapper(async (req, res, next) => {
 
 const deleteComment = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
-  const comment = await Comment.findById(id);
-  if (!comment) {
+  const deletedcomment = await Comment.findByIdAndDelete({ _id: id });
+  if (!deletedcomment) {
     const error = errorHandler.create(
-      httpResponse.message.projectNotFound,
-      httpResponse.status.commentNotFound
+      httpResponse.message.commentNotFound,
+      httpResponse.status.notfound
     );
     return next(error);
   }
-  await Comment.deleteOne({ _id: id });
   res.json({
     status: httpResponse.status.ok,
     message: httpResponse.message.deleteComment,
-    data: null,
   });
 });
 

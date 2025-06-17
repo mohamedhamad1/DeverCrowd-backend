@@ -5,7 +5,8 @@ const roles = {
     cto: "CTO",
     cmo: "CMO",
     uiux: "UIUX",
-    security: "Security"
+    security: "Security",
+    viewer: "Viewer",
 }
 
 module.exports = roles

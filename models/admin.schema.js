@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const roles = require("../utils/adminRoles");
+const roles = require("../utils/roles");
 const adminSchema = mongoose.Schema({
   username: {
     type: String,

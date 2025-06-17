@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/log", logRoutes);
-app.use("/api/projects", projectRoutes);
+app.use("/api/project", projectRoutes);
 app.use("/api/contact", contactRoutes);
 
 app.use((req, res, next) => {
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next)=>{
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({ status: httpResponse.status.badrequest, message: httpResponse.message.invalidjsonformat, data: null });
-  }
+  }  
   res.status(err.statusCode || 500).json({message: err.message, status: err.statusCode || 500, data: null})
 })
 

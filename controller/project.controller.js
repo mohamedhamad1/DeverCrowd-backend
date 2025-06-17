@@ -2,13 +2,16 @@ const Project = require("../models/project.schema");
 const httpResponse = require("../utils/httpResponse");
 const errorHandler = require("../utils/errorHandler");
 const asyncWrapper = require("../middlewares/asyncWrapper");
+const auth = require("../middlewares/auth");
 
 const getProjects = asyncWrapper(async (req, res, next) => {
   const limit = req.query.limit || 10;
   const page = req.query.page || 1;
   const skip = limit * (page - 1);
+  
   let projects;
-  if (req.role == "viewer") {
+  
+  if (!req.user) {
     projects = await Project.find({ status: "completed" })
       .select("title description pic category")
       .limit(limit)
@@ -25,7 +28,6 @@ const getProjects = asyncWrapper(async (req, res, next) => {
 
 const singleProject = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-  console.log(req);
   const project = await Project.findById(id);
   if (!project) {
     const error = errorHandler.create(
@@ -42,7 +44,7 @@ const singleProject = asyncWrapper(async (req, res, next) => {
 });
 
 const createProject = asyncWrapper(async (req, res, next) => {
-  const { title, description, timetofinish, client, status, pic, category } =
+  const { title, description, timetofinish, client, status, pic, category, cost} =
     req.body;
   const newProject = new Project({
     title,
@@ -52,6 +54,7 @@ const createProject = asyncWrapper(async (req, res, next) => {
     status,
     pic,
     category,
+    cost
   });
   await newProject.save();
   res.status(201).json({
@@ -63,7 +66,7 @@ const createProject = asyncWrapper(async (req, res, next) => {
 
 const updateProject = asyncWrapper(async (req, res, next) => {
   const id = req.params.id;
-  const { title, description, pic, timetofinish, client, status, category } = req.body;
+  const { title, description, timetofinish, client, status, pic, category, cost, timespend} = req.body;
   const newproject = await Project.findOneAndUpdate(
     { _id: id },
     {
@@ -74,6 +77,8 @@ const updateProject = asyncWrapper(async (req, res, next) => {
       client,
       status,
       category,
+      cost,
+      timespend
     },
     { new: true }
   );

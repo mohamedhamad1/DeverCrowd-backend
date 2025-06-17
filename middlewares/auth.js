@@ -3,18 +3,36 @@ const redis = require("../config/redis");
 const errorHandler = require("../utils/errorHandler");
 const httpResponse = require("../utils/httpResponse");
 const asyncWrapper = require("./asyncWrapper");
+const roles = require("../utils/roles");
+
+
+
+const isauth = asyncWrapper(async (req, res, next)=>{
+  const token = req.headers.authorization;
+  if(!token)
+    return next()
+
+  const isBlacklisted = await redis.get(`blacklist:${token}`);
+  if(isBlacklisted)
+    return next()
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    req.user = decoded;
+  } catch (err) {
+    req.user = null
+  }
+  next()
+})
+
 
 const verifyToken = asyncWrapper(async (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
-    if (req.baseUrl == "/api/projects/") {
-      req.role = "viewer";
-      return next();
-    }
     return next(
       errorHandler.create(
-        httpResponse.message.unauthorized,
-        httpResponse.status.unauthorized
+        httpResponse.message.unauthenticated,
+        httpResponse.status.unauthenticated
       )
     );
   }
@@ -22,8 +40,8 @@ const verifyToken = asyncWrapper(async (req, res, next) => {
   if (isBlacklisted)
     return next(
       errorHandler.create(
-        httpResponse.message.tokenExpiredOrInvalid,
-        httpResponse.status.unauthanticated
+        httpResponse.message.unauthenticated,
+        httpResponse.status.unauthenticated
       )
     );
 
@@ -34,8 +52,8 @@ const verifyToken = asyncWrapper(async (req, res, next) => {
   } catch (err) {
     return next(
       errorHandler.create(
-        httpResponse.message.tokenExpiredOrInvalid,
-        httpResponse.status.unauthanticated
+        httpResponse.message.unauthenticated,
+        httpResponse.status.unauthenticated
       )
     );
   }
@@ -58,4 +76,5 @@ const allowedTo = (...roles) => {
 module.exports = {
   verifyToken,
   allowedTo,
+  isauth
 };

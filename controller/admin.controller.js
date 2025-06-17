@@ -86,7 +86,7 @@ const Logout = asyncWrapper(async (req, res, next) => {
 
 const authtest = asyncWrapper(async (req, res, next) => {
   const token = req.headers.authorization;
-  res.json({ token });
+  res.json({ message:"USER AUTHERIZED", token });
 });
 
 const GetMessages = asyncWrapper(async (req, res, next) => {
